@@ -1,10 +1,10 @@
-import { createClient } from '@/lib/supabase/server'
+import { resolveViewer } from '@/lib/viewer'
 import { formatDate } from '@/lib/utils'
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
-import { 
-  User, Calendar, Clock, Activity, BookOpen, ClipboardList, 
-  BookMarked, ArrowUpRight, Flame, Sparkles, ShieldCheck, HelpCircle 
+import {
+  User, Calendar, Clock, Activity, BookOpen, ClipboardList,
+  BookMarked, ArrowUpRight, Flame, Sparkles, ShieldCheck, HelpCircle
 } from 'lucide-react'
 
 export const metadata = { title: 'Parent Portal - EduAI' }
@@ -12,25 +12,24 @@ export const metadata = { title: 'Parent Portal - EduAI' }
 export default async function ParentPage({
   searchParams,
 }: {
-  searchParams: Promise<{ child?: string }>
+  searchParams: Promise<{ child?: string; preview?: string }>
 }) {
-  const supabase = await createClient()
-  const { data: { session } } = await supabase.auth.getSession()
+  const params = await searchParams
+  const viewer = await resolveViewer(params.preview)
+  if (!viewer) redirect('/auth/login')
 
-  if (!session) {
-    redirect('/auth/login')
+  if (viewer.role !== 'parent') {
+    redirect(viewer.role === 'admin' ? '/dashboard/admin' : '/dashboard')
   }
 
-  // Fetch parent profile details
-  const { data: parentProfile } = await (supabase.from('profiles') as any)
-    .select('full_name')
-    .eq('id', session.user.id)
-    .single()
+  const supabase = viewer.db as any
+  const parentUid = viewer.userId
+  const parentProfile = viewer.profile
 
   // Fetch linked children profiles
   const { data: children } = await (supabase.from('profiles') as any)
     .select('id, full_name, xp_points, streak_days, email')
-    .eq('parent_id', session.user.id)
+    .eq('parent_id', parentUid)
 
   const kids = children ?? []
 
@@ -45,7 +44,7 @@ export default async function ParentPage({
           <p className="text-lg font-bold text-gray-700">No children linked to your account yet</p>
           <p className="text-sm text-gray-500 max-w-md mx-auto leading-relaxed">
             Please ask your child to log in, navigate to **Settings**, and enter your registered parent email:
-            <span className="block font-bold text-brand mt-2 select-all font-mono bg-slate-50 p-2 rounded-xl border border-slate-150/50">{(session.user.email) || 'your-email'}</span>
+            <span className="block font-bold text-brand mt-2 select-all font-mono bg-slate-50 p-2 rounded-xl border border-slate-150/50">{parentProfile?.email || 'your-email'}</span>
           </p>
         </div>
       </div>
@@ -53,8 +52,7 @@ export default async function ParentPage({
   }
 
   // Get active child from URL search params or default to first child
-  const resolvedParams = await searchParams
-  const activeChildId = resolvedParams.child || kids[0].id
+  const activeChildId = params.child || kids[0].id
   const activeChild = kids.find((k: any) => k.id === activeChildId) || kids[0]
 
   // Fetch active child's logs (remarks from teachers)

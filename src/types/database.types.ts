@@ -18,6 +18,7 @@ export interface Database {
           parent_id: string | null
           enrollment_no: string | null
           teacher_id: string | null
+          class_id: string | null
           xp_points: number
           streak_days: number
           created_at: string
@@ -91,6 +92,33 @@ export interface Database {
         Insert: Omit<Database['public']['Tables']['notifications']['Row'], 'id' | 'created_at' | 'read'>
         Update: Partial<Pick<Database['public']['Tables']['notifications']['Row'], 'read'>>
       }
+      classes: {
+        Row: { id: string; name: string; school_id: string | null; created_at: string }
+        Insert: Omit<Database['public']['Tables']['classes']['Row'], 'id' | 'created_at'>
+        Update: Partial<Database['public']['Tables']['classes']['Insert']>
+      }
+      teacher_classes: {
+        Row: { id: string; teacher_id: string; class_id: string; subject_name: string; created_at: string }
+        Insert: Omit<Database['public']['Tables']['teacher_classes']['Row'], 'id' | 'created_at'>
+        Update: Partial<Database['public']['Tables']['teacher_classes']['Insert']>
+      }
+      notes: {
+        Row: {
+          id: string; teacher_id: string; title: string; content: string
+          file_url: string | null; class_id: string | null; subject_name: string | null; created_at: string
+        }
+        Insert: Omit<Database['public']['Tables']['notes']['Row'], 'id' | 'created_at'>
+        Update: Partial<Database['public']['Tables']['notes']['Insert']>
+      }
+      student_logs: {
+        Row: {
+          id: string; teacher_id: string; student_id: string
+          log_type: 'academic' | 'behavior' | 'attendance' | 'remark'
+          content: string; subject_name: string | null; created_at: string
+        }
+        Insert: Omit<Database['public']['Tables']['student_logs']['Row'], 'id' | 'created_at'>
+        Update: Partial<Database['public']['Tables']['student_logs']['Insert']>
+      }
     }
   }
 }
@@ -106,3 +134,7 @@ export type ChatMessage = Database['public']['Tables']['chat_messages']['Row']
 export type PerformanceRecord = Database['public']['Tables']['performance_records']['Row']
 export type Achievement = Database['public']['Tables']['achievements']['Row']
 export type Notification = Database['public']['Tables']['notifications']['Row']
+export type Class = Database['public']['Tables']['classes']['Row']
+export type TeacherClass = Database['public']['Tables']['teacher_classes']['Row']
+export type Note = Database['public']['Tables']['notes']['Row']
+export type StudentLog = Database['public']['Tables']['student_logs']['Row']

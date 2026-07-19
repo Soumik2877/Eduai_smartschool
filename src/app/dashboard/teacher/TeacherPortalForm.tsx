@@ -45,6 +45,7 @@ interface TeacherPortalFormProps {
   initialNotes: Note[]
   initialLogs: Log[]
   teacherClasses: any[]
+  readOnly?: boolean
 }
 
 export default function TeacherPortalForm({
@@ -53,7 +54,8 @@ export default function TeacherPortalForm({
   students = [],
   initialNotes = [],
   initialLogs = [],
-  teacherClasses = []
+  teacherClasses = [],
+  readOnly = false
 }: TeacherPortalFormProps) {
   const router = useRouter()
   const supabase = createClient()
@@ -167,6 +169,7 @@ export default function TeacherPortalForm({
   // Handle Note Submission
   async function handleNoteSubmit(e: React.FormEvent) {
     e.preventDefault()
+    if (readOnly) return
     if (!noteForm.title.trim() || !noteForm.content.trim()) return
 
     setNoteLoading(true)
@@ -202,6 +205,7 @@ export default function TeacherPortalForm({
 
   // Handle Note Deletion
   async function handleNoteDelete(noteId: string) {
+    if (readOnly) return
     if (!confirm('Are you sure you want to delete this study note? Students will lose access to it.')) return
 
     try {
@@ -217,6 +221,7 @@ export default function TeacherPortalForm({
   // Handle Remark Submission
   async function handleLogSubmit(e: React.FormEvent) {
     e.preventDefault()
+    if (readOnly) return
     if (!selectedStudent || !logForm.content.trim()) return
 
     setLogLoading(true)

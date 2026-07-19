@@ -188,6 +188,32 @@ export default function LoginPage() {
           </form>
         </div>
 
+        {/* DEMO CREDENTIALS — for competition judges */}
+        <div className="mt-5 glass-card p-5 border border-indigo-100/60">
+          <p className="text-[11px] font-black uppercase tracking-wider text-indigo-600 mb-2 flex items-center gap-1.5">
+            🎓 Demo logins (Air Force School Kalaikunda)
+          </p>
+          <div className="grid grid-cols-2 gap-2 text-[11px]">
+            <div className="bg-white/60 rounded-lg p-2 border border-slate-100">
+              <span className="block font-bold text-gray-700">Admin</span>
+              <span className="block font-mono text-gray-500 select-all">admin@afsk.edu</span>
+            </div>
+            <div className="bg-white/60 rounded-lg p-2 border border-slate-100">
+              <span className="block font-bold text-gray-700">Teacher</span>
+              <span className="block font-mono text-gray-500 select-all">AFSK-TCH-SCI</span>
+            </div>
+            <div className="bg-white/60 rounded-lg p-2 border border-slate-100">
+              <span className="block font-bold text-gray-700">Student</span>
+              <span className="block font-mono text-gray-500 select-all">AFSK-X-01</span>
+            </div>
+            <div className="bg-white/60 rounded-lg p-2 border border-slate-100">
+              <span className="block font-bold text-gray-700">Parent</span>
+              <span className="block font-mono text-gray-500 select-all">parent.raj@afsk.edu</span>
+            </div>
+          </div>
+          <p className="text-[10px] text-gray-400 mt-2">Password for all demo accounts: <span className="font-mono font-bold text-gray-600 select-all">Afsk@2027</span> · Admin: <span className="font-mono font-bold text-gray-600 select-all">AfskAdmin@2027</span></p>
+        </div>
+
       </div>
     </div>
   )

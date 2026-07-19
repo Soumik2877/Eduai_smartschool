@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Project Report — EduAI Smart School | Air Force School Kalaikunda</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@600;700&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #ffffff;
+      --surface: #ffffff;
+      --surface-alt: #f7f8fa;
+      --border: #d1d5db;
+      --border-dark: #9ca3af;
+      --text: #111827;
+      --text-muted: #4b5563;
+      --text-soft: #374151;
+      --navy: #1e3a5f;
+      --navy-light: #2c5282;
+      --accent-line: #1e3a5f;
+      --max-width: 800px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    body {
+      font-family: 'Source Sans 3', 'Segoe UI', system-ui, sans-serif;
+      background: #e5e7eb;
+      color: var(--text);
+      line-height: 1.7;
+      font-size: 11pt;
+    }
+
+    .document {
+      max-width: var(--max-width);
+      margin: 2rem auto;
+      background: var(--bg);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 8px 24px rgba(0, 0, 0, 0.08);
+    }
+
+    /* ── Cover Page ── */
+    .cover {
+      padding: 3.5rem 3rem 3rem;
+      border-bottom: 3px double var(--navy);
+      text-align: center;
+    }
+
+    .cover .institution {
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 0.5rem;
+    }
+
+    .cover h1 {
+      font-family: 'Crimson Pro', Georgia, serif;
+      font-size: 1.85rem;
+      font-weight: 700;
+      color: var(--navy);
+      line-height: 1.3;
+      margin-bottom: 2.5rem;
+    }
+
+    .cover .report-type {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 2rem;
+    }
+
+    .cover-table {
+      width: 100%;
+      max-width: 520px;
+      margin: 0 auto 2.5rem;
+      border-collapse: collapse;
+      text-align: left;
+    }
+
+    .cover-table tr {
+      border-bottom: 1px solid var(--border);
+    }
+
+    .cover-table tr:last-child {
+      border-bottom: none;
+    }
+
+    .cover-table th {
+      width: 38%;
+      padding: 0.85rem 0;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      vertical-align: top;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .cover-table td {
+      padding: 0.85rem 0 0.85rem 1rem;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text);
+      vertical-align: top;
+    }
+
+    .cover-table .field-line {
+      display: block;
+      min-height: 1.4rem;
+      border-bottom: 1px solid var(--border-dark);
+      color: var(--text);
+    }
+
+    .cover .academic-year {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    /* ── Body ── */
+    .body {
+      padding: 2.5rem 3rem 3rem;
+    }
+
+    .toc {
+      margin-bottom: 2.5rem;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .toc h2 {
+      font-family: 'Crimson Pro', Georgia, serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .toc ol {
+      list-style: none;
+      counter-reset: toc;
+    }
+
+    .toc li {
+      counter-increment: toc;
+      border-bottom: 1px dotted var(--border);
+    }
+
+    .toc li:last-child { border-bottom: none; }
+
+    .toc a {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding: 0.5rem 0;
+      text-decoration: none;
+      color: var(--text-soft);
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+
+    .toc a::before {
+      content: counter(toc) ".";
+      font-weight: 600;
+      color: var(--navy);
+      margin-right: 0.75rem;
+      flex-shrink: 0;
+    }
+
+    .toc a:hover { color: var(--navy); }
+
+    /* ── Sections ── */
+    section {
+      margin-bottom: 2.5rem;
+      page-break-inside: avoid;
+    }
+
+    section h2 {
+      font-family: 'Crimson Pro', Georgia, serif;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--navy);
+      padding-bottom: 0.5rem;
+      margin-bottom: 1.25rem;
+      border-bottom: 2px solid var(--navy);
+    }
+
+    section h3 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text);
+      margin: 1.5rem 0 0.65rem;
+    }
+
+    section h3:first-of-type { margin-top: 0; }
+
+    p {
+      color: var(--text-soft);
+      margin-bottom: 0.85rem;
+      text-align: justify;
+    }
+
+    p:last-child { margin-bottom: 0; }
+
+    .abstract {
+      font-style: italic;
+      color: var(--text-muted);
+      border-left: 3px solid var(--navy);
+      padding-left: 1rem;
+      margin-bottom: 1.25rem;
+    }
+
+    /* ── Tables ── */
+    .table-wrap {
+      overflow-x: auto;
+      margin: 0.75rem 0 1.25rem;
+      border: 1px solid var(--border);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+    }
+
+    thead { background: var(--surface-alt); }
+
+    th {
+      text-align: left;
+      padding: 0.6rem 0.85rem;
+      font-weight: 700;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      color: var(--text-muted);
+      border-bottom: 1px solid var(--border);
+    }
+
+    td {
+      padding: 0.65rem 0.85rem;
+      border-bottom: 1px solid var(--border);
+      color: var(--text-soft);
+      vertical-align: top;
+    }
+
+    tr:last-child td { border-bottom: none; }
+
+    td strong { color: var(--text); font-weight: 600; }
+
+    /* ── Lists ── */
+    .formal-list {
+      list-style: none;
+      margin: 0.5rem 0 1rem;
+      padding: 0;
+    }
+
+    .formal-list li {
+      position: relative;
+      padding: 0.35rem 0 0.35rem 1.25rem;
+      color: var(--text-soft);
+      font-size: 0.9rem;
+    }
+
+    .formal-list li::before {
+      content: "—";
+      position: absolute;
+      left: 0;
+      color: var(--navy);
+      font-weight: 600;
+    }
+
+    .numbered-list {
+      margin: 0.5rem 0 1rem 1.25rem;
+      color: var(--text-soft);
+      font-size: 0.9rem;
+    }
+
+    .numbered-list li {
+      margin-bottom: 0.4rem;
+    }
+
+    .numbered-list li strong { color: var(--text); }
+
+    /* ── Subsection blocks ── */
+    .subsection {
+      margin: 1rem 0;
+      padding: 1rem 1.25rem;
+      background: var(--surface-alt);
+      border: 1px solid var(--border);
+    }
+
+    .subsection h4 {
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--navy);
+      margin-bottom: 0.6rem;
+    }
+
+    .subsection ol {
+      margin-left: 1.15rem;
+      font-size: 0.88rem;
+      color: var(--text-soft);
+    }
+
+    .subsection ol li { margin-bottom: 0.35rem; }
+
+    /* ── Tech summary ── */
+    .tech-summary {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin: 1rem 0;
+    }
+
+    .tech-summary span {
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 0.25rem 0.6rem;
+      border: 1px solid var(--border);
+      background: var(--surface-alt);
+      color: var(--text-muted);
+    }
+
+    /* ── Footer ── */
+    .doc-footer {
+      padding: 1.5rem 3rem;
+      border-top: 1px solid var(--border);
+      text-align: center;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .doc-footer p { text-align: center; margin: 0.15rem 0; }
+
+    .print-btn {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      background: var(--navy);
+      color: #fff;
+      border: none;
+      padding: 0.65rem 1.1rem;
+      font-family: inherit;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      cursor: pointer;
+      z-index: 100;
+    }
+
+    .print-btn:hover { background: var(--navy-light); }
+
+    @media print {
+      body { background: #fff; }
+      .document { margin: 0; box-shadow: none; max-width: 100%; }
+      .print-btn { display: none; }
+      .cover { padding: 2.5rem 2rem; }
+      .body { padding: 2rem; }
+      section { page-break-inside: avoid; }
+    }
+
+    @media (max-width: 640px) {
+      .cover, .body, .doc-footer { padding-left: 1.5rem; padding-right: 1.5rem; }
+      .document { margin: 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="document">
+
+    <!-- Cover Page -->
+    <header class="cover">
+      <p class="institution">Air Force School Kalaikunda</p>
+      <h1>Project Report</h1>
+      <p class="report-type">Computer Science / Information Technology</p>
+
+      <table class="cover-table">
+        <tr>
+          <th>Name of the Project</th>
+          <td>EduAI Smart School — AI-Powered Learning Portal for Indian Classrooms</td>
+        </tr>
+        <tr>
+          <th>Team Members</th>
+          <td>
+            <span class="field-line"></span>
+            <span class="field-line" style="margin-top: 0.75rem;"></span>
+            <span class="field-line" style="margin-top: 0.75rem;"></span>
+          </td>
+        </tr>
+        <tr>
+          <th>Mentor Teacher</th>
+          <td><span class="field-line"></span></td>
+        </tr>
+        <tr>
+          <th>Academic Year</th>
+          <td>2025–26</td>
+        </tr>
+      </table>
+
+      <p class="academic-year">Submitted in partial fulfilment of the project requirements</p>
+    </header>
+
+    <div class="body">
+
+      <!-- Table of Contents -->
+      <nav class="toc" aria-label="Table of contents">
+        <h2>Table of Contents</h2>
+        <ol>
+          <li><a href="#introduction"><span>Introduction</span></a></li>
+          <li><a href="#features"><span>Features of the Project</span></a></li>
+          <li><a href="#benefits"><span>Benefits of the Project</span></a></li>
+          <li><a href="#lessons"><span>Lessons Learned</span></a></li>
+          <li><a href="#conclusion"><span>Conclusion</span></a></li>
+        </ol>
+      </nav>
+
+      <!-- 1. Introduction -->
+      <section id="introduction">
+        <h2>1. Introduction</h2>
+        <p class="abstract">
+          EduAI Smart School is a full-stack web application developed to establish a unified digital ecosystem connecting students, teachers, and parents within a single academic platform.
+        </p>
+        <p>
+          The system integrates classroom communication—including study notes dissemination, academic progress logging, and homework management—with artificial intelligence-based learning modules comprising a doubt resolution engine, automated study planner, adaptive quiz generator, and career counselling assistant. Additional engagement mechanisms such as experience points, study streaks, focus timers, and achievement badges are incorporated to promote sustained academic participation.
+        </p>
+        <p>
+          The platform is configured for Indian school curricula (CBSE, ICSE, and State Board) and implements role-based access control for students, teachers, parents, and administrators. It is intended for deployment at Air Force School Kalaikunda and comparable educational institutions.
+        </p>
+        <p><strong>Technology Stack:</strong></p>
+        <div class="tech-summary">
+          <span>Next.js 15</span>
+          <span>React 18</span>
+          <span>Supabase</span>
+          <span>PostgreSQL</span>
+          <span>Row Level Security</span>
+          <span>Tailwind CSS</span>
+          <span>Anthropic Claude</span>
+          <span>NVIDIA Gemma</span>
+          <span>Vercel</span>
+        </div>
+      </section>
+
+      <!-- 2. Features -->
+      <section id="features">
+        <h2>2. Features of the Project</h2>
+
+        <h3>2.1 Multi-Role Portal System</h3>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Role</th>
+                <th>Primary Functions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Student</strong></td>
+                <td>Dashboard, AI learning tools, homework management, focus timer, analytics, and gamification.</td>
+              </tr>
+              <tr>
+                <td><strong>Teacher</strong></td>
+                <td>Study note publication, student observation logging, and class roster management.</td>
+              </tr>
+              <tr>
+                <td><strong>Parent</strong></td>
+                <td>Monitoring of linked student progress, teacher remarks, and shared academic materials.</td>
+              </tr>
+              <tr>
+                <td><strong>Administrator</strong></td>
+                <td>Role synchronisation and system administration.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p>
+          Authentication is facilitated through role-specific identifiers: students authenticate via Enrollment Number, teachers via Teacher ID, and parents via registered email address linked to the student account.
+        </p>
+
+        <h3>2.2 Student Dashboard</h3>
+        <p>The student dashboard provides consolidated access to the following modules:</p>
+        <ul class="formal-list">
+          <li>Experience points and daily study streak tracking</li>
+          <li>Daily schedule, pending assignments, and upcoming examinations with countdown indicators</li>
+          <li>Teacher remarks categorised as academic, behavioural, or attendance-related observations</li>
+          <li>Curriculum notes and file attachments published by teaching staff</li>
+        </ul>
+
+        <h3>2.3 AI-Powered Learning Tools</h3>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Module</th>
+                <th>Description</th>
+                <th>Implementation</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>AI Doubt Solver</strong></td>
+                <td>Step-by-step explanations for mathematics, science, and programming, aligned with Indian curriculum standards.</td>
+                <td>NVIDIA API (Gemma model); streaming response delivery</td>
+              </tr>
+              <tr>
+                <td><strong>AI Study Planner</strong></td>
+                <td>Automated study schedules based on syllabus coverage, subject difficulty, and examination calendar.</td>
+                <td>Anthropic Claude</td>
+              </tr>
+              <tr>
+                <td><strong>AI Quiz Engine</strong></td>
+                <td>Topic-specific multiple-choice assessments with configurable difficulty and explanatory feedback.</td>
+                <td>Anthropic Claude</td>
+              </tr>
+              <tr>
+                <td><strong>AI Career Guide</strong></td>
+                <td>Career pathway recommendations, entrance examination guidance (JEE, NEET, CLAT), and structured action plans.</td>
+                <td>Anthropic Claude</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>2.4 Teacher Portal</h3>
+        <ul class="formal-list">
+          <li>Class-filtered student roster with subject mapping</li>
+          <li>Publication of study notes with textual content and optional file attachments</li>
+          <li>Student progress logs for academic performance, conduct, and attendance</li>
+          <li>Class and subject assignment (e.g., Grade 10 Mathematics, Grade 11 Physics)</li>
+        </ul>
+
+        <h3>2.5 Parent Portal</h3>
+        <ul class="formal-list">
+          <li>Account linkage to student profiles via enrollment number or registered parent email</li>
+          <li>Support for monitoring multiple linked student accounts</li>
+          <li>Access to student experience points, study streaks, teacher observations, and shared materials</li>
+          <li>Performance analytics for linked students</li>
+        </ul>
+
+        <h3>2.6 Study and Productivity Modules</h3>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Module</th>
+                <th>Functionality</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Homework Tracker</strong></td>
+                <td>Assignment due dates, priority classification, and status management (pending, completed, overdue).</td>
+              </tr>
+              <tr>
+                <td><strong>Focus Timer</strong></td>
+                <td>Pomodoro-based study sessions with configurable intervals and subject association.</td>
+              </tr>
+              <tr>
+                <td><strong>Study Planner</strong></td>
+                <td>Calendar-based scheduling for study, revision, practice, and break sessions.</td>
+              </tr>
+              <tr>
+                <td><strong>Examination Tracker</strong></td>
+                <td>Syllabus documentation and examination date monitoring.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>2.7 Gamification and Analytics</h3>
+        <p>
+          The platform incorporates experience points, consecutive study day tracking, achievement badges, and level progression to encourage regular academic engagement. The analytics module provides weekly focus duration charts, subject-wise performance visualisation, and quiz score trends, with role-specific views for students, teachers, and parents.
+        </p>
+
+        <h3>2.8 Technical Architecture</h3>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Layer</th>
+                <th>Components</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Presentation</strong></td><td>Next.js 15, React 18, Tailwind CSS, Recharts</td></tr>
+              <tr><td><strong>Application</strong></td><td>Next.js API Routes, Supabase Authentication</td></tr>
+              <tr><td><strong>Data</strong></td><td>PostgreSQL (Supabase) with Row Level Security policies</td></tr>
+              <tr><td><strong>Artificial Intelligence</strong></td><td>NVIDIA API (conversational tutoring); Anthropic Claude (structured generation)</td></tr>
+              <tr><td><strong>Deployment</strong></td><td>Vercel cloud infrastructure</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- 3. Benefits -->
+      <section id="benefits">
+        <h2>3. Benefits of the Project</h2>
+
+        <h3>3.1 Benefits to Students</h3>
+        <ul class="formal-list">
+          <li>Continuous access to AI-assisted doubt resolution independent of classroom schedules</li>
+          <li>Personalised study planning and adaptive assessment aligned with prescribed syllabus</li>
+          <li>Structured motivation through gamification and progress tracking mechanisms</li>
+          <li>Centralised access to homework, examinations, study materials, and teacher feedback</li>
+          <li>Career guidance contextualised to the Indian higher education and entrance examination framework</li>
+        </ul>
+
+        <h3>3.2 Benefits to Teachers</h3>
+        <ul class="formal-list">
+          <li>Efficient distribution of study materials to entire class cohorts through a single publication</li>
+          <li>Digitised student progress documentation reducing reliance on manual record-keeping</li>
+          <li>Organisation of academic content by class and subject</li>
+          <li>Reduction in administrative workload, enabling greater focus on instructional activities</li>
+        </ul>
+
+        <h3>3.3 Benefits to Parents</h3>
+        <ul class="formal-list">
+          <li>Transparent access to teacher observations and published academic materials</li>
+          <li>Reduced dependency on direct communication with school staff for routine academic updates</li>
+          <li>Secure account linkage to student profiles via institutional enrollment identifiers</li>
+          <li>Visibility into student study habits through focus duration and streak metrics</li>
+        </ul>
+
+        <h3>3.4 Benefits to the Institution</h3>
+        <ul class="formal-list">
+          <li>Alignment with National Education Policy objectives for technology-enabled learning</li>
+          <li>Consolidation of academic tools within a single integrated platform</li>
+          <li>Scalability across additional classes, subjects, and institutional units</li>
+          <li>Compatibility with CBSE, ICSE, and State Board curricula</li>
+          <li>Cloud-based deployment eliminating requirement for on-premises infrastructure</li>
+        </ul>
+      </section>
+
+      <!-- 4. Lessons Learned -->
+      <section id="lessons">
+        <h2>4. Lessons Learned</h2>
+
+        <div class="subsection">
+          <h4>4.1 Technical Observations</h4>
+          <ol>
+            <li>Role-based access control through Supabase Row Level Security is essential for maintaining data integrity across student, teacher, and parent accounts.</li>
+            <li>Institutional authentication via enrollment numbers and teacher identifiers is more practicable than email-exclusive login systems in school environments.</li>
+            <li>Selection of appropriate AI service providers for distinct task categories—conversational tutoring versus structured content generation—improves system reliability.</li>
+            <li>Comprehensive database schema planning prior to development reduces subsequent migration requirements.</li>
+            <li>Streaming response delivery significantly enhances perceived responsiveness in AI-assisted tutoring interfaces.</li>
+          </ol>
+        </div>
+
+        <div class="subsection">
+          <h4>4.2 Project Management Observations</h4>
+          <ol>
+            <li>Incremental development commencing with the student portal prior to teacher and parent modules facilitated manageable scope control.</li>
+            <li>Incorporation of Indian curriculum context within AI prompt engineering improved output relevance and accuracy.</li>
+            <li>Implementation of security policies at the database layer from project inception is critical for educational data protection.</li>
+            <li>Early deployment to cloud infrastructure enabled demonstration and evaluation without local environment constraints.</li>
+          </ol>
+        </div>
+
+        <div class="subsection">
+          <h4>4.3 Challenges Addressed</h4>
+          <ol>
+            <li>Resolution of Row Level Security recursion through dedicated database migration procedures.</li>
+            <li>Synchronisation of user role metadata between authentication records and profile database entries.</li>
+            <li>Implementation of parent–student account linkage via enrollment number at registration and within account settings.</li>
+            <li>Application of class-scoped content filtering for study notes and progress logs.</li>
+          </ol>
+        </div>
+
+        <div class="subsection">
+          <h4>4.4 Scope for Future Development</h4>
+          <ol>
+            <li>Development of a mobile application or Progressive Web Application for extended device accessibility.</li>
+            <li>Offline access capability for downloaded study materials.</li>
+            <li>Voice-based input for AI tutoring interactions.</li>
+            <li>Automated notification delivery to parents upon publication of teacher observations.</li>
+            <li>Integration with institutional ERP and attendance management systems.</li>
+          </ol>
+        </div>
+      </section>
+
+      <!-- 5. Conclusion -->
+      <section id="conclusion">
+        <h2>5. Conclusion</h2>
+        <p>
+          EduAI Smart School constitutes a comprehensive smart-school platform that unifies AI-assisted learning, teacher–parent communication, and student engagement within a single web-based system. The project demonstrates the feasibility of developing production-grade educational technology through structured software engineering practices.
+        </p>
+        <p>
+          Developed utilising contemporary web technologies and configured for Indian educational institutions including Air Force School Kalaikunda, the platform illustrates the practical application of artificial intelligence in routine classroom operations, thereby enhancing accessibility, transparency, and academic engagement across all stakeholders.
+        </p>
+      </section>
+
+    </div>
+
+    <footer class="doc-footer">
+      <p><strong>EduAI Smart School</strong></p>
+      <p>Air Force School Kalaikunda &nbsp;|&nbsp; Academic Year 2025–26</p>
+    </footer>
+
+  </div>
+
+  <button class="print-btn" onclick="window.print()">Print Document</button>
+
+</body>
+</html>

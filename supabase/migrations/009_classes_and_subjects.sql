@@ -33,6 +33,26 @@ CREATE TABLE IF NOT EXISTS public.teacher_classes (
 -- Enable RLS on teacher_classes
 ALTER TABLE public.teacher_classes ENABLE ROW LEVEL SECURITY;
 
+-- 4b. Ensure notes & student_logs base tables exist (they are queried by the app
+-- but were never created by an earlier migration — added here to keep the set coherent).
+CREATE TABLE IF NOT EXISTS public.notes (
+  id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+  teacher_id uuid REFERENCES public.profiles(id) ON DELETE CASCADE NOT NULL,
+  title text NOT NULL,
+  content text NOT NULL,
+  file_url text,
+  created_at timestamptz NOT NULL DEFAULT now()
+);
+
+CREATE TABLE IF NOT EXISTS public.student_logs (
+  id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+  teacher_id uuid REFERENCES public.profiles(id) ON DELETE CASCADE NOT NULL,
+  student_id uuid REFERENCES public.profiles(id) ON DELETE CASCADE NOT NULL,
+  log_type text NOT NULL DEFAULT 'remark' CHECK (log_type IN ('academic','behavior','attendance','remark')),
+  content text NOT NULL,
+  created_at timestamptz NOT NULL DEFAULT now()
+);
+
 -- 5. Add columns to notes and student_logs
 ALTER TABLE public.notes ADD COLUMN IF NOT EXISTS class_id uuid REFERENCES public.classes(id) ON DELETE SET NULL;
 ALTER TABLE public.notes ADD COLUMN IF NOT EXISTS subject_name text;

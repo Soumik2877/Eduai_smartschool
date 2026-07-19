@@ -1,62 +1,33 @@
 import { redirect } from 'next/navigation'
-import { createClient } from '@/lib/supabase/server'
+import { resolveViewer } from '@/lib/viewer'
 import { formatDate, daysUntil } from '@/lib/utils'
 import Link from 'next/link'
-import { 
-  Zap, Flame, Calendar, Clock, BookOpen, ClipboardList, BookMarked, 
-  GraduationCap, ArrowUpRight, CheckCircle2, FileText, AlertCircle, Compass 
+import {
+  Zap, Flame, Calendar, Clock, BookOpen, ClipboardList, BookMarked,
+  GraduationCap, ArrowUpRight, CheckCircle2, FileText, AlertCircle, Compass
 } from 'lucide-react'
 
 export const metadata = { title: 'Dashboard - EduAI' }
 
-export default async function DashboardPage() {
-  const supabase = await createClient()
-  const { data: { session } } = await supabase.auth.getSession()
-  if (!session) return null
+export default async function DashboardPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ preview?: string }>
+}) {
+  const { preview } = await searchParams
+  const viewer = await resolveViewer(preview)
+  if (!viewer) return null
 
-  let { data: sessionProfile, error } = await (supabase.from('profiles') as any)
-    .select('role')
-    .eq('id', session.user.id)
-    .single()
+  const role = viewer.role
+  const previewQS = preview ? `?preview=${preview}` : ''
 
-  console.log('Profile query result:', { profile: sessionProfile, error, userId: session.user.id })
+  // Route non-students to their own portals (carry the preview target through).
+  if (role === 'admin' && !viewer.isPreview) redirect('/dashboard/admin')
+  if (role === 'teacher') redirect(`/dashboard/teacher${previewQS}`)
+  if (role === 'parent') redirect(`/dashboard/parent${previewQS}`)
 
-  const metaRole = session.user.user_metadata?.role
-  let role = sessionProfile?.role || 'student'
-
-  if (!sessionProfile) {
-    console.log('Profile row missing in page. Creating one...')
-    const defaultName = session.user.user_metadata?.full_name || session.user.email?.split('@')[0] || 'User'
-    const insertRole = (metaRole === 'teacher' || metaRole === 'parent' || metaRole === 'student') ? metaRole : 'student'
-    
-    await (supabase.from('profiles') as any)
-      .upsert({
-        id: session.user.id,
-        email: session.user.email,
-        full_name: defaultName,
-        role: insertRole,
-        xp_points: 0,
-        streak_days: 0
-      })
-    role = insertRole
-  } else if (metaRole && (metaRole === 'teacher' || metaRole === 'parent' || metaRole === 'student') && metaRole !== role) {
-    console.log(`Syncing profile role in page to match user metadata: ${metaRole}`)
-    await (supabase.from('profiles') as any)
-      .update({ role: metaRole })
-      .eq('id', session.user.id)
-    role = metaRole
-  }
-
-  if (role === 'teacher') {
-    console.log('Redirecting to teacher dashboard')
-    redirect('/dashboard/teacher')
-  }
-  if (role === 'parent') {
-    console.log('Redirecting to parent dashboard')
-    redirect('/dashboard/parent')
-  }
-
-  const uid = session.user.id
+  const supabase = viewer.db as any
+  const uid = viewer.userId
   const today = new Date().toISOString().split('T')[0]
 
   const [

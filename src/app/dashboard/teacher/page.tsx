@@ -1,26 +1,25 @@
-import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
+import { resolveViewer } from '@/lib/viewer'
 import TeacherPortalForm from './TeacherPortalForm'
 
 export const metadata = { title: 'Teacher Portal - EduAI' }
 
-export default async function TeacherPage() {
-  const supabase = await createClient()
-  const { data: { session } } = await supabase.auth.getSession()
+export default async function TeacherPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ preview?: string }>
+}) {
+  const { preview } = await searchParams
+  const viewer = await resolveViewer(preview)
+  if (!viewer) redirect('/auth/login')
 
-  if (!session) {
-    redirect('/auth/login')
+  if (viewer.role !== 'teacher') {
+    redirect(viewer.role === 'admin' ? '/dashboard/admin' : '/dashboard')
   }
 
-  // Fetch teacher profile
-  const { data: profile } = await (supabase.from('profiles') as any)
-    .select('*')
-    .eq('id', session.user.id)
-    .single()
-
-  if (!profile || profile.role !== 'teacher') {
-    redirect('/dashboard')
-  }
+  const supabase = viewer.db as any
+  const teacherUid = viewer.userId
+  const profile = viewer.profile
 
   // Fetch student roster (selecting class_id for filtering)
   const { data: students } = await (supabase.from('profiles') as any)
@@ -32,7 +31,7 @@ export default async function TeacherPage() {
   const { data: notes } = await supabase
     .from('notes')
     .select('*')
-    .eq('teacher_id', session.user.id)
+    .eq('teacher_id', teacherUid)
     .order('created_at', { ascending: false })
 
   // Fetch logs created by this teacher
@@ -45,13 +44,13 @@ export default async function TeacherPage() {
       created_at,
       profiles:student_id ( full_name )
     `)
-    .eq('teacher_id', session.user.id)
+    .eq('teacher_id', teacherUid)
     .order('created_at', { ascending: false })
 
   // Fetch teacher's active class & subject mappings
   const { data: teacherClasses } = await (supabase.from('teacher_classes') as any)
     .select('*, classes(name)')
-    .eq('teacher_id', session.user.id)
+    .eq('teacher_id', teacherUid)
 
   const formattedLogs = (logs ?? []).map((l: any) => ({
     id: l.id,
@@ -64,12 +63,13 @@ export default async function TeacherPage() {
 
   return (
     <TeacherPortalForm
-      teacherId={session.user.id}
-      teacherName={profile.full_name}
+      teacherId={teacherUid}
+      teacherName={profile?.full_name ?? 'Teacher'}
       students={students || []}
       initialNotes={notes || []}
       initialLogs={formattedLogs}
       teacherClasses={teacherClasses || []}
+      readOnly={viewer.isPreview}
     />
   )
 }
